@@ -70,13 +70,13 @@ This project implements a custom shell in C language that mimics basic functiona
 - Piping capabilities using `|`
 - Combined I/O redirection and piping
 - `.myshrc` configuration file for custom aliases and functions
-- Signal handling (Ctrl+C, Ctrl+D, Ctrl+Z)
+- Signal handling (Ctrl+C, Ctrl+D)
 
 ## Compilation and Execution
 
 ```bash
-gcc -o myshell main.c
-./myshell
+make
+./a.out
 ```
 
 ## Implementation Details
