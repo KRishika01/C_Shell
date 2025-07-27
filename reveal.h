@@ -1,3 +1,6 @@
+#ifndef REVEAL_H
+#define REVEAL_H
+
 #include<stdio.h>
 #include<stdlib.h>
 #include<unistd.h>
@@ -9,6 +12,7 @@
 #include<sys/stat.h>
 #include<time.h>
 #include<libgen.h>
+#include "hop.h"
 
 
 #define COLOR_R "\033[0m"
@@ -25,3 +29,5 @@ void colouring(char *path);
 void flag_al_la_Execution(char *data);
 void revealExecution(int counter,char *array[],char *data,char *prepath);
 void revealFlags(char *input,int flag_a,int flag_l,char *path,char *prepath);
+
+#endif

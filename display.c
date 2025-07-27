@@ -1,6 +1,5 @@
 #include "display.h"
-#include "hop.h"
-#include "bg_fg.h"
+
 
 char *username;
 struct utsname information;
@@ -18,7 +17,7 @@ char *printRelativepath(char *homeDirectory,char *path) {
     return relative;
 }
 
-void displayuserData(char *data) {
+void displayuserData() {
     char Ddata[1024];
     username = getlogin();
     if(username == NULL) {
@@ -35,17 +34,6 @@ void displayuserData(char *data) {
     }
     char *printingPath = printRelativepath(presentWorkingDirectory,cwd_in_display);
     printf("\033[1;32m<%s@%s\033[0m:\033[1;34m%s>\033[0m ",username,information.nodename,printingPath);
+    fflush(stdout);
     // snprintf(data,size,"<%s@%s:%s> ",username,information.nodename,printingPath);
 }
-
-// void updatedata(char **array,char *data,int timetaken) {
-//     printf("gone\n");
-//     printf("%s\n",data);
-//     printf("%s\n",array[0]);
-//     strcat(data,array[0]);
-//     strcat(data," : ");
-//     char times[100];
-//     sprintf(times,"%d",timetaken);
-//     strcat(data,times);
-//     strcat(data,">");
-// }

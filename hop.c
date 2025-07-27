@@ -1,5 +1,3 @@
-//  hop /~project is not working
-
 #include "hop.h"
 #include "display.h"
 #include "input.h"

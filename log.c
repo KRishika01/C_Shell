@@ -1,8 +1,6 @@
 /* USING FILE POINTER */
 /* Using circular buffer for having only 15 commands stored in file */
 
-// In execution if input is log execute 1 then i am getting executed the last command but not the most recent command.
-
 #include "log.h"
 #include "Execution.h"
 

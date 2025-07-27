@@ -1,7 +1,8 @@
+
 #include "proclore.h"
 
-void get_pid() {
-    printf("pid: %d\n",getpid());
+void get_pid(int pid) {
+    printf("pid: %d\n",pid);
 }
 
 void getstatus(int pid) {
@@ -57,12 +58,13 @@ void getprocess_group(int pid) {
 
 void getvirtual_path(int pid) {
     char virtual_path[1024];
-    sprintf(virtual_path,"/proc/%d/statm",pid);
+    snprintf(virtual_path,sizeof(virtual_path),"/proc/%d/statm",pid);
 
     FILE *fvir = fopen(virtual_path,"r");
     if(fvir == NULL) {
         perror("fvir");
-        exit(1);
+        return;
+        // exit(1);
     }
     int virtual_size;
     fscanf(fvir,"%d",&virtual_size);
@@ -77,7 +79,8 @@ void getExecutablePath(int pid) {
     FILE *fexec = fopen(exec_path,"r");
     if(fexec == NULL) {
         perror("fexec");
-        exit(1);
+        return;
+        // exit(1);
     }
 
     int dataRead;
@@ -96,7 +99,7 @@ void getExecutablePath(int pid) {
 }
 
 void proclore(int pid) {
-    get_pid();
+    get_pid(pid);
     getstatus(pid);
     getprocess_group(pid);
     getvirtual_path(pid);

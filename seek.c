@@ -104,16 +104,16 @@ void flags_execution_seek(char **array,int counter) {
     }
     else if(flag_dd + flag_ff + flag_ts == 2) {
         char *path_seek = ".";
-        if(counter == 4) {
-            array[4] = (char*)malloc(1024*sizeof(char));
-            strcpy(array[4],path_seek);
-        }   
-        seek(array[4],array[3],flag_dd,flag_ff,flag_ts);
 
         if(flag_dd && flag_ff) {
             printf("Invalid Commands\n");
             return;
         }
+        if(counter == 4) {
+            array[4] = (char*)malloc(1024*sizeof(char));
+            strcpy(array[4],path_seek);
+        }   
+        seek(array[4],array[3],flag_dd,flag_ff,flag_ts);
     }
     if((fileCounter == 0) && (directoryCounter == 1) && flag_ts) {
         if(chdir(duparray)) {

@@ -1,0 +1,15 @@
+ping 23503 15
+bg 23503
+hop f1
+hello >> file2.txt
+Hello >> file2.txt
+hello << file2.txt
+This is a command >> file2.txt
+cat file2.txt
+hello || file2.txt
+hello | file2.txt
+echo hello | file2
+echo hello
+echo hello | ./file2
+echo "Hello" | file2.txt
+cat file2.txt | wc -l

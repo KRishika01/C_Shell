@@ -1,23 +1,43 @@
 #include "bg_fg.h"
-#include "display.h"
 
 int timetaken_in_sleep;
 char timetaken_update[4096];
+int returnCode_in_bg_fg;
+
+void command_background(int pid,int size,char *command) {
+    char path_in[4096];
+    FILE *fcommand;
+
+    snprintf(path_in,sizeof(path_in),"/proc/%d/comm",pid);
+    fcommand = fopen(path_in,"r");
+    if(fcommand != NULL) {
+        if(fgets(command,sizeof(command),fcommand) != NULL) {
+            command[strcspn(command,"\n")] = '\0';
+        }
+        else {
+            snprintf(command,size,"Failed");
+        }
+        fclose(fcommand);
+    }
+    else {
+        snprintf(command,size,"Unknown");
+    }
+}
 
 void status_background_process(char *input) {
     int status;
-    // int returnCode_1 = waitpid(-1,&status,WNOHANG);
-    int returnCode_1;
-
-    while(returnCode_1 = waitpid(-1,&status,WNOHANG) > 0) {
+    int returnCode_1 = waitpid(-1,&status,WNOHANG);
+    while(returnCode_1 > 0) {
         if(WIFEXITED(status)) {
-            // printf("%s exited %d\n",data,WEXITSTATUS(status));
-            printf("Sleep exited normally (%d)\n",getpid());
+            printf("Process exited normally with status (%d) (PID : %d)\n",WEXITSTATUS(status),returnCode_1);
         }
-        else if(WIFSIGNALED(status)) {
-            // printf("%s exited abnormally %d\n",data,WIFSIGNALED(status));
-            printf("Sleep exited abnormally (%d)\n",getpid());
+        else if(WIFSIGNALED(status)){
+            printf("Process terminated by signal (%d) (PID : %d)\n",WTERMSIG(status),returnCode_1);
         }
+        else if(WIFSTOPPED(status)) {
+            printf("Process stopped by the signal (%d) (PID : %d)\n",WSTOPSIG(status),returnCode_1);
+        }
+        returnCode_1 = waitpid(-1,&status,WNOHANG);
     }
 }
 
@@ -40,16 +60,19 @@ void foreground_background(int flag_bg,char *input) {
 
     gettimeofday(&initiation,NULL);
 
-    int returnCode = fork();
-    if(returnCode < 0) {
+    returnCode_in_bg_fg = fork();
+    if(returnCode_in_bg_fg < 0) {
         perror("Error in forking");
         return;
     }
-    else if(returnCode > 0) {
+    else if(returnCode_in_bg_fg > 0) {
+        // pid_in_ping = returnCode;
         if(!flag_bg) {
+            fg_running = 1;
+            pid_in_ping = returnCode_in_bg_fg;
             char data[4095];
             int sts;
-            waitpid(returnCode,NULL,0);
+            waitpid(returnCode_in_bg_fg,NULL,0);
             gettimeofday(&termination,NULL);
             timetaken_in_sleep = termination.tv_sec - initiation.tv_sec;
 
@@ -59,12 +82,16 @@ void foreground_background(int flag_bg,char *input) {
             }
         }
         else {
-            printf("[%d]\n",getpid());
+            
+            fg_running = 0;
+            printf("[%d]\n",returnCode_in_bg_fg);
         }
     }
     else {
+        if(flag_bg) {
+            setpgid(0,0);       // After bg command if we enter CTRL-C then to not do anything we use this
+        }
         execvp(array[0],array);
-        // perror("Error in execvp");
         if(strcmp(input,"exit") != 0) {
             printf("%s is not a valid command\n",input);
         }
@@ -72,19 +99,6 @@ void foreground_background(int flag_bg,char *input) {
     }
 }
 
-// void updatingprompt(char *input,int *flag_update,char *upd_data) {
-//     struct timeval initiation;
-//     struct timeval termination;
-
-//     gettimeofday(&initiation,NULL);
-//     foreground_background(0,input);
-
-//     gettimeofday(&termination,NULL);
-//     int timetaken = termination.tv_sec - initiation.tv_sec;
-//     if(timetaken > 2) {
-//         *flag_update = 1;
-//     }
-// }
 
 char *removing(char *string) {
     if(string == NULL) {

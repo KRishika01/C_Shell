@@ -1,3 +1,6 @@
+#ifndef SEEK_H
+#define SEEK_H
+
 #include<stdio.h>
 #include<stdlib.h>
 #include<unistd.h>
@@ -8,3 +11,5 @@
 
 void seek(char *path,char *data,int dd,int ff,int ts);
 void flags_execution_seek(char **array,int counter);
+
+#endif

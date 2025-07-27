@@ -1,3 +1,6 @@
+#ifndef LOG_H
+#define LOG_H
+
 #include<stdio.h>
 #include<stdlib.h>
 #include<unistd.h>
@@ -5,7 +8,7 @@
 #include<fcntl.h>
 
 #define MAX_SIZE 15
-#define FILE_PATH "/home/kalakuntlarishika/Desktop/MiniProject-1/log.txt"
+#define FILE_PATH "/home/kalakuntlarishika/Downloads/2nd Year/SEM 3/OSN/Projects/MiniProject-1/log.txt"
 
 void openingFile();
 void writeToFile();
@@ -14,3 +17,5 @@ void deletingTheCommands();
 void addingTofile(char *input);
 void printing_file_data();
 void execute_commands_log(int value);
+
+#endif

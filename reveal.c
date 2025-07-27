@@ -1,7 +1,4 @@
-// - these are not done
-
 #include "reveal.h"
-#include "hop.h"
 
 int flag = 0;
 
